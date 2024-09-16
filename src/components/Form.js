@@ -14,12 +14,15 @@ const Form = ({ onAddParticipant }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg"
+    >
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="p-2 border border-gray-300 rounded-lg"
+        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         placeholder="Nombre del participante"
         required
       />
@@ -27,14 +30,11 @@ const Form = ({ onAddParticipant }) => {
         type="number"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
-        className="p-2 border border-gray-300 rounded-lg"
+        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         placeholder="Gasto"
         required
       />
-      <button
-        type="submit"
-        className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition"
-      >
+      <button type="submit" className="bg-primary text-white p-3 rounded-lg">
         Agregar
       </button>
     </form>

@@ -3,24 +3,33 @@ import React from "react";
 const Results = ({ participants }) => {
   if (participants.length === 0) return null;
 
-  const totalAmount = participants.reduce((sum, participant) => sum + participant.amount, 0);
+  const totalAmount = participants.reduce(
+    (sum, participant) => sum + participant.amount,
+    0
+  );
   const averageAmount = totalAmount / participants.length;
 
-  const debts = participants.map(participant => ({
+  const debts = participants.map((participant) => ({
     name: participant.name,
-    amount: participant.amount - averageAmount
+    amount: participant.amount - averageAmount,
   }));
 
-  const creditors = debts.filter(debt => debt.amount > 0);
-  const debtors = debts.filter(debt => debt.amount < 0);
+  const creditors = debts.filter((debt) => debt.amount > 0);
+  const debtors = debts.filter((debt) => debt.amount < 0);
 
   return (
-    <div className="mt-5 bg-blue-50 p-5 rounded-lg">
-      <p>Total gastado: <strong>${totalAmount.toFixed(2)}</strong></p>
-      <p>Promedio a pagar por persona: <strong>${averageAmount.toFixed(2)}</strong></p>
+    <div className="mt-5 bg-white p-5 rounded-lg shadow-lg">
+      <p className="text-lg font-semibold mb-2">
+        Total gastado:{" "}
+        <strong className="text-blue-500">${totalAmount.toFixed(2)}</strong>
+      </p>
+      <p className="text-lg font-semibold mb-4">
+        Promedio a pagar por persona:{" "}
+        <strong className="text-blue-500">${averageAmount.toFixed(2)}</strong>
+      </p>
 
-      {creditors.map(creditor => {
-        return debtors.map(debtor => {
+      {creditors.map((creditor) =>
+        debtors.map((debtor) => {
           if (creditor.amount === 0 || debtor.amount === 0) return null;
 
           const debtToSettle = Math.min(creditor.amount, -debtor.amount);
@@ -28,12 +37,14 @@ const Results = ({ participants }) => {
           debtor.amount += debtToSettle;
 
           return (
-            <p key={`${debtor.name}-${creditor.name}`}>
-              {debtor.name} debe pagar a {creditor.name} ${debtToSettle.toFixed(2)}
+            <p key={`${debtor.name}-${creditor.name}`} className="mb-1">
+              <span className="text-red-500">{debtor.name}</span> debe pagar a{" "}
+              <span className="text-green-500">{creditor.name}</span>{" "}
+              <strong>${debtToSettle.toFixed(2)}</strong>
             </p>
           );
-        });
-      })}
+        })
+      )}
     </div>
   );
 };
