@@ -30,8 +30,8 @@ const App = () => {
   };
 
   return (
-    <div className="container mx-auto mt-10 p-5 max-w-lg">
-      <h1 className="text-3xl font-bold text-center text-white bg-blue-500 p-4 rounded-lg shadow-md mb-6">
+    <div className="container mx-auto mt-10 p-5 max-w-lg bg-background min-h-screen">
+      <h1 className="text-4xl font-heading font-bold text-center text-primary bg-white p-4 rounded-lg shadow-lg mb-6">
         División de Gastos
       </h1>
       <Form onAddParticipant={addParticipant} />

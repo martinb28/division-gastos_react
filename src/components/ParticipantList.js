@@ -8,11 +8,11 @@ const ParticipantList = ({ participants, onRemoveParticipant }) => {
           key={index}
           className="bg-white p-4 shadow-md rounded-lg flex justify-between items-center"
         >
-          <span className="font-medium">
+          <span className="font-medium text-neutral">
             {participant.name}: ${participant.amount.toFixed(2)}
           </span>
           <button
-            className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
+            className="bg-danger text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
             onClick={() => onRemoveParticipant(index)}
           >
             Eliminar

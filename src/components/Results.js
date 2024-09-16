@@ -21,11 +21,11 @@ const Results = ({ participants }) => {
     <div className="mt-5 bg-white p-5 rounded-lg shadow-lg">
       <p className="text-lg font-semibold mb-2">
         Total gastado:{" "}
-        <strong className="text-blue-500">${totalAmount.toFixed(2)}</strong>
+        <strong className="text-primary">${totalAmount.toFixed(2)}</strong>
       </p>
       <p className="text-lg font-semibold mb-4">
         Promedio a pagar por persona:{" "}
-        <strong className="text-blue-500">${averageAmount.toFixed(2)}</strong>
+        <strong className="text-primary">${averageAmount.toFixed(2)}</strong>
       </p>
 
       {creditors.map((creditor) =>
@@ -38,8 +38,8 @@ const Results = ({ participants }) => {
 
           return (
             <p key={`${debtor.name}-${creditor.name}`} className="mb-1">
-              <span className="text-red-500">{debtor.name}</span> debe pagar a{" "}
-              <span className="text-green-500">{creditor.name}</span>{" "}
+              <span className="text-danger">{debtor.name}</span> debe pagar a{" "}
+              <span className="text-secondary">{creditor.name}</span>{" "}
               <strong>${debtToSettle.toFixed(2)}</strong>
             </p>
           );

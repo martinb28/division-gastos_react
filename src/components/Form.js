@@ -22,7 +22,7 @@ const Form = ({ onAddParticipant }) => {
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
         placeholder="Nombre del participante"
         required
       />
@@ -30,11 +30,14 @@ const Form = ({ onAddParticipant }) => {
         type="number"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
-        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
         placeholder="Gasto"
         required
       />
-      <button type="submit" className="bg-primary text-white p-3 rounded-lg">
+      <button
+        type="submit"
+        className="bg-primary text-white p-3 rounded-lg hover:bg-blue-600 transition"
+      >
         Agregar
       </button>
     </form>
