@@ -1,21 +1,12 @@
 import React from "react";
+import { calculateDebts } from "../utils/calculateDebts";
 
 const Results = ({ participants }) => {
   if (participants.length === 0) return null;
 
-  const totalAmount = participants.reduce(
-    (sum, participant) => sum + participant.amount,
-    0
-  );
+  const totalAmount = participants.reduce((sum, p) => sum + p.amount, 0);
   const averageAmount = totalAmount / participants.length;
-
-  const debts = participants.map((participant) => ({
-    name: participant.name,
-    amount: participant.amount - averageAmount,
-  }));
-
-  const creditors = debts.filter((debt) => debt.amount > 0);
-  const debtors = debts.filter((debt) => debt.amount < 0);
+  const transactions = calculateDebts(participants);
 
   return (
     <div className="mt-5 bg-white p-5 rounded-lg shadow-lg">
@@ -28,22 +19,18 @@ const Results = ({ participants }) => {
         <strong className="text-primary">${averageAmount.toFixed(2)}</strong>
       </p>
 
-      {creditors.map((creditor) =>
-        debtors.map((debtor) => {
-          if (creditor.amount === 0 || debtor.amount === 0) return null;
-
-          const debtToSettle = Math.min(creditor.amount, -debtor.amount);
-          creditor.amount -= debtToSettle;
-          debtor.amount += debtToSettle;
-
-          return (
-            <p key={`${debtor.name}-${creditor.name}`} className="mb-1">
-              <span className="text-danger">{debtor.name}</span> debe pagar a{" "}
-              <span className="text-secondary">{creditor.name}</span>{" "}
-              <strong>${debtToSettle.toFixed(2)}</strong>
-            </p>
-          );
-        })
+      {transactions.length === 0 ? (
+        <p className="text-green-600 font-medium">
+          ✅ Todos pagaron la misma parte. ¡No hay deudas!
+        </p>
+      ) : (
+        transactions.map((t) => (
+          <p key={`${t.from}-${t.to}`} className="mb-1">
+            <span className="text-danger font-medium">{t.from}</span> debe pagar
+            a <span className="text-secondary font-medium">{t.to}</span>{" "}
+            <strong>${t.amount.toFixed(2)}</strong>
+          </p>
+        ))
       )}
     </div>
   );

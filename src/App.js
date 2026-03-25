@@ -1,37 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "./components/Form";
 import ParticipantList from "./components/ParticipantList";
 import Results from "./components/Results";
 
+const STORAGE_KEY = "division-gastos-participants";
+
 const App = () => {
-  const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(participants));
+  }, [participants]);
 
   const addParticipant = (name, amount) => {
-    setParticipants((prevParticipants) => {
-      const existingParticipant = prevParticipants.find(
-        (participant) => participant.name === name
-      );
-      if (existingParticipant) {
-        return prevParticipants.map((participant) =>
-          participant.name === name
-            ? { ...participant, amount: participant.amount + amount }
-            : participant
+    setParticipants((prev) => {
+      const existing = prev.find((p) => p.name === name);
+      if (existing) {
+        return prev.map((p) =>
+          p.name === name ? { ...p, amount: p.amount + amount } : p
         );
-      } else {
-        return [...prevParticipants, { name, amount }];
       }
+      return [...prev, { name, amount }];
     });
   };
 
   const removeParticipant = (index) => {
-    setParticipants((prevParticipants) =>
-      prevParticipants.filter((_, i) => i !== index)
-    );
+    setParticipants((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
-    <div className="container mx-auto mt-10 p-5 max-w-lg bg-background min-h-screen">
-      <h1 className="text-4xl font-heading font-bold text-center text-primary bg-white p-4 rounded-lg shadow-lg mb-6">
+    <div className="container mx-auto mt-10 p-5 max-w-lg">
+      <h1 className="text-3xl font-heading font-bold text-center text-primary mb-6">
         División de Gastos
       </h1>
       <Form onAddParticipant={addParticipant} />
