@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+# División de Gastos 💸
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación web para dividir gastos de forma equitativa entre varios participantes. Calcula automáticamente quién le debe cuánto a quién, minimizando el número de transacciones necesarias.
 
-## Available Scripts
+## ✨ Funcionalidades
 
-In the project directory, you can run:
+- **Agregar participantes** con el monto que cada uno pagó
+- **Eliminar participantes** individualmente
+- **Cálculo automático** del total, promedio por persona y deudas
+- **Transacciones mínimas**: el algoritmo greedy optimiza la cantidad de pagos necesarios
+- **Persistencia local**: los datos se guardan en `localStorage` y sobreviven recargas de página
+- Soporte para participantes que **no pagaron nada** (monto = 0)
+- Si un participante ya existe, el monto se **acumula** en lugar de duplicar la entrada
 
-### `npm start`
+## 🛠️ Tecnologías
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Tecnología | Versión | Rol |
+|---|---|---|
+| [React](https://react.dev/) | 18.x | Framework de UI |
+| [Vite](https://vitejs.dev/) | 8.x | Bundler y servidor de desarrollo |
+| [Tailwind CSS](https://tailwindcss.com/) | 3.x | Estilos |
+| [PostCSS](https://postcss.org/) | 8.x | Procesamiento de CSS |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📦 Instalación
 
-### `npm test`
+### Requisitos previos
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js >= 18
+- npm >= 9
 
-### `npm run build`
+### Pasos
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/martinb28/division-gastos_react.git
+cd division-gastos_react
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# 2. Instalar dependencias
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Uso
 
-### `npm run eject`
+### Servidor de desarrollo
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run dev
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+La app estará disponible en [http://localhost:5173](http://localhost:5173).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Build de producción
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm run build
+```
 
-## Learn More
+Los archivos optimizados se generan en la carpeta `dist/`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Previsualizar el build de producción
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run preview
+```
 
-### Code Splitting
+## 🧪 Tests
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Los tests cubren la lógica central del algoritmo de cálculo de deudas (`calculateDebts`).
 
-### Analyzing the Bundle Size
+```bash
+# Ejecutar tests (requiere vitest o jest configurado)
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Casos cubiertos
 
-### Making a Progressive Web App
+| Caso | Resultado esperado |
+|---|---|
+| Sin participantes | Array vacío |
+| Un solo participante | Sin deudas |
+| Todos pagaron lo mismo | Sin deudas |
+| Dos personas con diferencia | 1 transacción |
+| 3 personas, balances distintos | Mínimas transacciones |
+| Un pagador, dos deudores | 2 transacciones hacia el acreedor |
+| Inmutabilidad | No modifica el array original |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 📁 Estructura del proyecto
 
-### Advanced Configuration
+```
+division-gastos_react/
+├── index.html              # Entry point de Vite
+├── vite.config.js          # Configuración de Vite
+├── tailwind.config.js      # Configuración de Tailwind CSS
+├── postcss.config.js       # Configuración de PostCSS
+├── package.json
+├── public/                 # Archivos estáticos
+└── src/
+    ├── main.jsx            # Bootstrap de React
+    ├── App.jsx             # Componente raíz + lógica de estado
+    ├── App.test.js         # Tests del algoritmo de deudas
+    ├── index.css           # Estilos globales
+    ├── components/
+    │   ├── Form.jsx            # Formulario para agregar participantes
+    │   ├── ParticipantList.jsx # Lista de participantes con opción de eliminar
+    │   └── Results.jsx         # Resumen: total, promedio y transacciones
+    └── utils/
+        └── calculateDebts.js   # Algoritmo greedy de cálculo de deudas
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🧠 Algoritmo de cálculo
 
-### Deployment
+El cálculo de deudas usa un **algoritmo greedy de dos punteros** con complejidad `O(n log n)`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Se calcula el **promedio** del gasto total entre todos los participantes
+2. Se obtiene el **balance** de cada uno: `balance = monto_pagado - promedio`
+   - Balance positivo → acreedor (pagó de más)
+   - Balance negativo → deudor (pagó de menos)
+3. Se ordenan acreedores (desc) y deudores (asc) por balance
+4. Se emparejan con dos punteros, generando la **menor cantidad posible de transacciones**
 
-### `npm run build` fails to minify
+## 📝 Licencia
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Uso personal / académico.
