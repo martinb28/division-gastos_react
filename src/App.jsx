@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Form from "./components/Form";
 import ParticipantList from "./components/ParticipantList";
 import Results from "./components/Results";
@@ -19,7 +19,7 @@ const App = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(participants));
   }, [participants]);
 
-  const addParticipant = (name, amount) => {
+  const addParticipant = useCallback((name, amount) => {
     setParticipants((prev) => {
       const existing = prev.find((p) => p.name === name);
       if (existing) {
@@ -29,11 +29,21 @@ const App = () => {
       }
       return [...prev, { name, amount }];
     });
-  };
+  }, []);
 
-  const removeParticipant = (index) => {
+  const removeParticipant = useCallback((index) => {
     setParticipants((prev) => prev.filter((_, i) => i !== index));
-  };
+  }, []);
+
+  const editParticipant = useCallback((index, newAmount) => {
+    setParticipants((prev) =>
+      prev.map((p, i) => (i === index ? { ...p, amount: newAmount } : p))
+    );
+  }, []);
+
+  const clearAll = useCallback(() => {
+    setParticipants([]);
+  }, []);
 
   return (
     <div className="container mx-auto mt-10 p-5 max-w-lg">
@@ -44,6 +54,8 @@ const App = () => {
       <ParticipantList
         participants={participants}
         onRemoveParticipant={removeParticipant}
+        onEditParticipant={editParticipant}
+        onClearAll={clearAll}
       />
       <Results participants={participants} />
     </div>
