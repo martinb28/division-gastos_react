@@ -2,17 +2,18 @@ import React, { useMemo } from "react";
 import { calculateDebts } from "../utils/calculateDebts";
 
 const Results = ({ participants }) => {
-  if (participants.length === 0) return null;
-
+  // Los hooks deben llamarse antes de cualquier return condicional (Rules of Hooks)
   const totalAmount = useMemo(
     () => participants.reduce((sum, p) => sum + p.amount, 0),
     [participants]
   );
-  const averageAmount = totalAmount / participants.length;
+  const averageAmount = participants.length > 0 ? totalAmount / participants.length : 0;
   const transactions = useMemo(
     () => calculateDebts(participants),
     [participants]
   );
+
+  if (participants.length === 0) return null;
 
   return (
     <div className="mt-5 bg-white p-5 rounded-lg shadow-lg">
