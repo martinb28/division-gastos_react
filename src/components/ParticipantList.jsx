@@ -12,7 +12,7 @@ const ParticipantList = ({ participants, onRemoveParticipant }) => {
     <ul className="list-none mt-4 space-y-3">
       {participants.map((participant, index) => (
         <li
-          key={participant.name}
+          key={`${participant.name}-${index}`}
           className="bg-white p-4 shadow-md rounded-lg flex justify-between items-center"
         >
           <span className="font-medium text-neutral">

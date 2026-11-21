@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { calculateDebts } from "../utils/calculateDebts";
 
 const Results = ({ participants }) => {
   if (participants.length === 0) return null;
 
-  const totalAmount = participants.reduce((sum, p) => sum + p.amount, 0);
+  const totalAmount = useMemo(
+    () => participants.reduce((sum, p) => sum + p.amount, 0),
+    [participants]
+  );
   const averageAmount = totalAmount / participants.length;
-  const transactions = calculateDebts(participants);
+  const transactions = useMemo(
+    () => calculateDebts(participants),
+    [participants]
+  );
 
   return (
     <div className="mt-5 bg-white p-5 rounded-lg shadow-lg">

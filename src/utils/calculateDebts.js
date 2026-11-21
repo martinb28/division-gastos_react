@@ -42,11 +42,14 @@ export function calculateDebts(participants) {
       });
     }
 
+    // Siempre actualizar balances (aunque pay sea 0 por redondeo)
     creditors[i].balance = parseFloat((creditors[i].balance - pay).toFixed(10));
     debtors[j].balance = parseFloat((debtors[j].balance + pay).toFixed(10));
 
-    if (Math.abs(creditors[i].balance) < 0.001) i++;
-    if (Math.abs(debtors[j].balance) < 0.001) j++;
+    // Threshold alineado con toFixed(2): valores < 0.005 se redondean a 0.00
+    // Usar 0.001 causaba bucle infinito cuando el balance quedaba entre 0.001 y 0.004
+    if (Math.abs(creditors[i].balance) < 0.005) i++;
+    if (Math.abs(debtors[j].balance) < 0.005) j++;
   }
 
   return transactions;
